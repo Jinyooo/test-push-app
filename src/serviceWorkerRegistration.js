@@ -39,6 +39,7 @@ export function register(config) {
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         navigator.serviceWorker.ready.then(() => {
+          Notification.requestPermission();
           console.log(
             'This web app is being served cache-first by a service ' +
               'worker. To learn more, visit https://cra.link/PWA'
@@ -71,6 +72,17 @@ function registerValidSW(swUrl, config) {
                 'New content is available and will be used when all ' +
                   'tabs for this page are closed. See https://cra.link/PWA.'
               );
+
+              registration.pushManager.subscribe({
+                userVisibleOnly : true,
+                applicationServerKey : "",
+              }).then((subscription) => {
+                const prevSubscription = JSON.parse(JSON.stringify(subscription))
+                console.log(prevSubscription)
+              }).catch((e) => console.log('subsription error', e))
+
+              Notification.requestPermission();
+
 
               // Execute callback
               if (config && config.onUpdate) {
